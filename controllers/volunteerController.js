@@ -4,24 +4,26 @@
 // import bcrypt from 'bcryptjs';
 // import jwt from 'jsonwebtoken';
 
+router.post('/signup',signup)
+// router.post('/login',login) 
 
-// const signup = async (req, res) => {
-//     try {
-//         const { name, age , gender  , address, qualification, volunteerDuration, centre } = req.body;
-//         const existingVolunteer = await Volunteer.findOne({ name });
-//         if (existingVolunteer) {
-//             return res.status(400).json({ message: 'Volunteer already exists' });
-//         }
-//         const hashedPassword = await bcrypt.hash(password, 10);
-//         const volunteer = new Volunteer({
-//             name,
-//             age,
-//             gender,
-//             address,
-//             qualification,
-//             volunteerDuration,
-//             centre
-//         });
+const signup = async (req, res) => {
+    try {
+        const { name, age , gender  , address, qualification, volunteerDuration, centre } = req.body;
+        const existingVolunteer = await Volunteer.findOne({ name });
+        if (existingVolunteer) {
+            return res.status(400).json({ message: 'Volunteer already exists' });
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const volunteer = new Volunteer({
+            name,
+            age,
+            gender,
+            address,
+            qualification,
+            volunteerDuration,
+            centre
+        });
 
 //         await volunteer.save();
 //         const token = jwt.sign(
@@ -87,6 +89,19 @@
 //     signup,
 //     login
 // }
+
+router.get('/data', async (req, res) => {
+    try {
+        return res.json({"data":"success"});
+    } catch (error) {
+        return res.status(500).json({ message: 'Error fetching volunteers', error: error.message });
+    }
+});
+
+
+
+
+router.post('/signup',signup)
 
 
 // router.post('/signup',signup)
