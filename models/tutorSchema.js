@@ -24,7 +24,7 @@ const tutorSchema = new Schema({
     required: true
   },
   class:{
-    type: String,
+    type: [String],
     required:true
   },
   qualification:{

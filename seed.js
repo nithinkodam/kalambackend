@@ -10,7 +10,7 @@ const dummyStudents = [];
 
 const genders = ['Male', 'Female', 'Other'];
 const centres = ['Hyderabad', 'Delhi', 'Bangalore'];
-const classes = ['2nd', '3rd', '4th', '5th'];
+const classes = ['2', '3', '4', '5'];
 const flags = ['yes', 'no'];
 const skillsPool = [
   'know abcd', 'know numbers',
