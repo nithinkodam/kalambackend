@@ -4,12 +4,12 @@ const Volunteer = require('../models/volunteerSchema.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-router.post('/signup',signup)
+
 // router.post('/login',login) 
 
 const signup = async (req, res) => {
     try {
-        const { name } = req.body;
+        const { name  ,centre , age , gender , address , qualification , volunteerDuration , password } = req.body;
         const existingVolunteer = await Volunteer.findOne({ name });
         if (existingVolunteer) {
             return res.status(400).json({ message: 'Volunteer already exists' });
@@ -22,7 +22,8 @@ const signup = async (req, res) => {
             address,
             qualification:[qualification],
             volunteerDuration,
-            centre
+            centre,
+            password:hashedPassword
         });
 
         await volunteer.save();
@@ -97,5 +98,10 @@ router.get('/data', async (req, res) => {
         return res.status(500).json({ message: 'Error fetching volunteers', error: error.message });
     }
 });
+
+
+
+
+router.post('/signup',signup)
 
 module.exports = router

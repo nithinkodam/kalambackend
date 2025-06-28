@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 const studentController = require('./controllers/studentController')
-const volunteerController = require('./controllers/studentController')
+const volunteerController = require('./controllers/volunteerController')
 
 const PORT = process.env.PORT || 5000
 const MONGO_URI = process.env.MONGO_URI
