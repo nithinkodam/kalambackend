@@ -1,47 +1,45 @@
-const express = require('express');
-const router = express.Router();
-const Volunteer = require('../models/volunteerSchema.js');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+// import  express from 'express';
+// router = express.Router();
+// import Volunteer from '../models/volunteerSchema.js';
+// import bcrypt from 'bcryptjs';
+// import jwt from 'jsonwebtoken';
 
-router.post('/signup',signup)
-// router.post('/login',login) 
 
-const signup = async (req, res) => {
-    try {
-        const { name, age , gender  , address, qualification, volunteerDuration, centre } = req.body;
-        const existingVolunteer = await Volunteer.findOne({ name });
-        if (existingVolunteer) {
-            return res.status(400).json({ message: 'Volunteer already exists' });
-        }
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const volunteer = new Volunteer({
-            name,
-            age,
-            gender,
-            address,
-            qualification,
-            volunteerDuration,
-            centre
-        });
+// const signup = async (req, res) => {
+//     try {
+//         const { name, age , gender  , address, qualification, volunteerDuration, centre } = req.body;
+//         const existingVolunteer = await Volunteer.findOne({ name });
+//         if (existingVolunteer) {
+//             return res.status(400).json({ message: 'Volunteer already exists' });
+//         }
+//         const hashedPassword = await bcrypt.hash(password, 10);
+//         const volunteer = new Volunteer({
+//             name,
+//             age,
+//             gender,
+//             address,
+//             qualification,
+//             volunteerDuration,
+//             centre
+//         });
 
-        await volunteer.save();
-        const token = jwt.sign(
-            { volunteerId: volunteer._id },
-            process.env.JWT_SECRET,
-            { expiresIn: '24h' }
-        );
-        res.status(201).json({
-            token,
-            volunteer: {
-                name,
-                centre
-            }
-        });
-    } catch (error) {
-        res.status(500).json({ message: 'Error creating volunteer', error: error.message });
-    }
-};
+//         await volunteer.save();
+//         const token = jwt.sign(
+//             { volunteerId: volunteer._id },
+//             process.env.JWT_SECRET,
+//             { expiresIn: '24h' }
+//         );
+//         res.status(201).json({
+//             token,
+//             volunteer: {
+//                 name,
+//                 centre
+//             }
+//         });
+//     } catch (error) {
+//         res.status(500).json({ message: 'Error creating volunteer', error: error.message });
+//     }
+// };
 
 
 
@@ -90,4 +88,8 @@ const signup = async (req, res) => {
 //     login
 // }
 
-module.exports = router
+
+// router.post('/signup',signup)
+// router.post('/login',login) 
+
+// module.exports = router

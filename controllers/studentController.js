@@ -6,7 +6,10 @@ const Student = require('../models/studentSchema')
 
 // POST /api/signup
 router.post('/signup', async (req, res) => {
-  const { name, password } = req.body;
+
+
+    console.log(req.body,"Hello")
+  const { name, password, photo, age, gender, centre, ex_skills, address, classs, fathername, flagged, attendance, marks } = req.body;
   try {
     // Check if user exists
     const existingUser = await Student.findOne({ name });
