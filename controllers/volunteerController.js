@@ -9,13 +9,15 @@ const { uploadOnCloudinary } = require('../utils/cloudinary');
 // router.post('/login',login) 
 const signup = async (req, res, next) => {
     try {
+        console.log("hello")
+        console.log(req.body)
         const { name, centre, age, gender, address, qualification, volunteerDuration, password } = await req.body;
         const existingVolunteer = await Volunteer.findOne({ name });
         if (existingVolunteer) {
             return res.status(400).json({ message: 'Volunteer already exists' });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        console.log("hello2");
+
         const file = req.file;
         if (file) {
             const path = file.path;
@@ -47,7 +49,6 @@ const signup = async (req, res, next) => {
         console.log("File not present")
        }
 }
-
 catch (error) {
     res.status(500).json({ message: 'Error creating volunteer', error: error.message });
 }
@@ -102,9 +103,55 @@ const logout = async (req, res) => {
     }
 };
 
+
+// Create tutor function
+const createTutor = async (req, res) => {
+    try {
+        const { volunteerId } = req.body;
+        
+        if (!volunteerId) {
+            return res.status(400).json({ message: 'Volunteer ID is required' });
+        }
+
+        const volunteer = await Volunteer.findById(volunteerId);
+        if (!volunteer) {
+            return res.status(404).json({ message: 'Volunteer not found' });
+        }
+
+        volunteer.istutor = true;
+        await volunteer.save();
+
+        res.json({
+            message: 'Tutor created successfully',
+            volunteer: {
+                id: volunteer._id,
+                name: volunteer.name,
+                istutor: volunteer.istutor
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error creating tutor', error: error.message });
+    }
+};
+
+const getTutordata = async (req, res) => {
+    try {
+        const {name , centre} = req.body;
+        const tutor = await Volunteer.find({name : name , centre : centre });
+        console.log("tutor" ,tutor)
+        res.json(tutor);
+    } catch (error) {
+        res.status(500).json({ message: 'Error getting tutor data', error: error.message });
+    }
+}
+
+
+
 router.post('/signup', upload.single('file'), signup);
 router.post('/login', upload.none(), login);
 router.post('/logout', upload.none(), logout);
+router.get('/get-tutor', upload.none(), getTutordata);
+router.post('/create-tutor', upload.none(), createTutor);
 
 
 

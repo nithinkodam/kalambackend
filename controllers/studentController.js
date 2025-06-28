@@ -3,16 +3,15 @@ require('dotenv').config()
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs')
-
+const upload = require('../middleware/multer.middleware');
+const { uploadOnCloudinary } = require('../utils/cloudinary');
 const Student = require('../models/studentSchema')
 
-router.post('/signup', async (req, res) => {
+router.post('/signup', upload.single('file') , async (req, res , next) => {
   console.log(req.body, "Hello");
-
   const {
     name,
     password,
-    photo,
     age,
     gender,
     centre,
@@ -20,9 +19,6 @@ router.post('/signup', async (req, res) => {
     address,
     classs,
     fathername,
-    flagged,
-    attendance,
-    marks
   } = req.body;
 
   try {
@@ -31,10 +27,26 @@ router.post('/signup', async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
+    const file = req.file;
+    let image = ""
+    if (file) {
+        const path = file.path;
+        const imageUrl = await uploadOnCloudinary(path);
+        const image = imageUrl;
+    }
+
+    const attendance = {
+        date:Date.now(),
+        status:"Present"
+    }
+    const marks = {
+        
+    }
+
     const student = new Student({
       name,
       password,
-      photo,
+      photo:image,
       age,
       gender,
       centre,

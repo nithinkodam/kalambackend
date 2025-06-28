@@ -18,7 +18,7 @@ exp.use(cors())
 exp.use(express.json())
 
 exp.use('/student',studentController)
-// exp.use('/volunteer',volunteerController)
+exp.use('/volunteer',volunteerController)
 
 // app.listen(5000,()=>{
 //     console.log(`Server is running on 5000`)

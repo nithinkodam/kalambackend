@@ -38,8 +38,11 @@ const volunteerSchema = new Schema({
   password:{
     type:String,
     required:true
-  }
-  
+  },
+  istutor:{
+    type:Boolean,
+    default:false
+  },
 }, {
   timestamps: true
 });
