@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 router.post('/signup',signup)
-router.post('/login',login) 
+// router.post('/login',login) 
 
 const signup = async (req, res) => {
     try {
@@ -46,47 +46,48 @@ const signup = async (req, res) => {
 
 
 
-const login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
+// const login = async (req, res) => {
+//     try {
+//         const { email, password } = req.body;
 
-        // Find volunteer
-        const volunteer = await Volunteer.findOne({ email });
-        if (!volunteer) {
-            return res.status(401).json({ message: 'Invalid email or password' });
-        }
+//         // Find volunteer
+//         const volunteer = await Volunteer.findOne({ email });
+//         if (!volunteer) {
+//             return res.status(401).json({ message: 'Invalid email or password' });
+//         }
 
-        // Check password
-        const isMatch = await bcrypt.compare(password, volunteer.password);
-        if (!isMatch) {
-            return res.status(401).json({ message: 'Invalid email or password' });
-        }
+//         // Check password
+//         const isMatch = await bcrypt.compare(password, volunteer.password);
+//         if (!isMatch) {
+//             return res.status(401).json({ message: 'Invalid email or password' });
+//         }
 
-        // Generate token
-        const token = jwt.sign(
-            { volunteerId: volunteer._id },
-            process.env.JWT_SECRET,
-            { expiresIn: '24h' }
-        );
+//         // Generate token
+//         const token = jwt.sign(
+//             { volunteerId: volunteer._id },
+//             process.env.JWT_SECRET,
+//             { expiresIn: '24h' }
+//         );
 
-        // Send response
-        res.json({
-            token,
-            volunteer: {
-                id: volunteer._id,
-                name: volunteer.name,
-                email: volunteer.email,
-                phone: volunteer.phone,
-                address: volunteer.address
-            }
-        });
-    } catch (error) {
-        res.status(500).json({ message: 'Error logging in', error: error.message });
-    }
-};
+//         // Send response
+//         res.json({
+//             token,
+//             volunteer: {
+//                 id: volunteer._id,
+//                 name: volunteer.name,
+//                 email: volunteer.email,
+//                 phone: volunteer.phone,
+//                 address: volunteer.address
+//             }
+//         });
+//     } catch (error) {
+//         res.status(500).json({ message: 'Error logging in', error: error.message });
+//     }
+// };
 
-export {
-    signup,
-    login
-}
+// export {
+//     signup,
+//     login
+// }
 
+module.exports = router
