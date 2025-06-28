@@ -30,35 +30,3 @@ mongoose.connect(MONGO_URI,{
         console.log(`Server is running on ${PORT}`)
     })
 })
-
-
-exp.post('/register', async(req,res)=>{
-    const { username, password, role } = req.body
-    const result = await User.findOne({ username : username })
-    if(result){
-        return res.status(401).json({ message : 'User already exists' })
-    }
-    hashedPassword = await bcrypt.hash(password, 10)
-    const user = {
-        username : username,
-        password : hashedPassword,
-    }
-    const newUser = new User(user);
-    await newUser.save();
-    return res.status(200).json({ message : 'User registered' })
-})
-
-
-exp.post('/login', async(req,res)=>{
-    const { username, password } = req.body
-    const result = await User.findOne({ username : username })
-    if(!result){
-        return res.status(404).json({ message : 'User not found' })
-    }
-    let pass = await bcrypt.compare(password, result.password)
-    if(!pass){
-        return res.status(401).json({ message : 'Invalid credentials' })
-    }
-    const token = jwt.sign({ username : result.username, role : result.role }, SECRET_KEY, { expiresIn : '12h'} )
-    return res.status(200).json({ message : 'Login successful', token : token })
-})
