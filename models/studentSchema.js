@@ -35,8 +35,9 @@ const studentSchema = new Schema({
 studentSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.name + SECRET_KEY, salt); // password = name + secret
+  this.password = await bcrypt.hash(this.password, salt); // ✅ use actual password
   next();
 });
+
 
 module.exports = mongoose.model('Student', studentSchema);

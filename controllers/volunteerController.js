@@ -1,15 +1,15 @@
-// import  express from 'express';
-// router = express.Router();
-// import Volunteer from '../models/volunteerSchema.js';
-// import bcrypt from 'bcryptjs';
-// import jwt from 'jsonwebtoken';
+const express = require('express');
+const router = express.Router();
+const Volunteer = require('../models/volunteerSchema.js');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-router.post('/signup',signup)
+
 // router.post('/login',login) 
 
 const signup = async (req, res) => {
     try {
-        const { name, age , gender  , address, qualification, volunteerDuration, centre } = req.body;
+        const { name  ,centre , age , gender , address , qualification , volunteerDuration , password } = req.body;
         const existingVolunteer = await Volunteer.findOne({ name });
         if (existingVolunteer) {
             return res.status(400).json({ message: 'Volunteer already exists' });
@@ -20,28 +20,29 @@ const signup = async (req, res) => {
             age,
             gender,
             address,
-            qualification,
+            qualification:[qualification],
             volunteerDuration,
-            centre
+            centre,
+            password:hashedPassword
         });
 
-//         await volunteer.save();
-//         const token = jwt.sign(
-//             { volunteerId: volunteer._id },
-//             process.env.JWT_SECRET,
-//             { expiresIn: '24h' }
-//         );
-//         res.status(201).json({
-//             token,
-//             volunteer: {
-//                 name,
-//                 centre
-//             }
-//         });
-//     } catch (error) {
-//         res.status(500).json({ message: 'Error creating volunteer', error: error.message });
-//     }
-// };
+        await volunteer.save();
+        const token = jwt.sign(
+            { volunteerId: volunteer._id },
+            process.env.JWT_SECRET,
+            { expiresIn: '24h' }
+        );
+        res.status(201).json({
+            token,
+            volunteer: {
+                name,
+                centre
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error creating volunteer', error: error.message });
+    }
+};
 
 
 
@@ -103,8 +104,4 @@ router.get('/data', async (req, res) => {
 
 router.post('/signup',signup)
 
-
-// router.post('/signup',signup)
-// router.post('/login',login) 
-
-// module.exports = router
+module.exports = router
