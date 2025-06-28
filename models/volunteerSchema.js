@@ -1,45 +1,13 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-
-const attendanceSchema = new Schema({
-  date: {
-    type: Date,
-    required: true,
-    default: Date.now
-  },
-  status: {
-    type: String,
-    enum: ['present', 'absent'],
-    required: true
-  }
-}, { _id: false });
-
-
-const marksSchema = new Schema({
-  assessment: {
-    type: String,
-    required: true
-  },
-  date: {
-    type: Date,
-    required: true,
-    default: Date.now
-  },
-  marks: {
-    type: Number,
-    required: true
-  }
-})
-
-
-const studentSchema = new Schema({
+const volunteerSchema = new Schema({
   name: {
     type: String,
     required: true
   },
   photo: {
-    type: String, // Assuming base64 string or image URL
+    type: String,
     required: false
   },
   age: {
@@ -55,7 +23,7 @@ const studentSchema = new Schema({
     type: String,
     required: true
   },
-  ex_skills: {
+  qualification: {
     type: [String], // Array of skills
     default: []
   },
@@ -63,28 +31,17 @@ const studentSchema = new Schema({
     type: String,
     required: true
   },
-  class: {
+  volunteerDuration: {
     type: String,
     required: true
   },
-  fathername: {
+  centre: {
     type: String,
     required: true
   },
-  flagged: {
-    type: String,
-    required: true
-  },
-  attendance: {
-    type: [attendanceSchema],
-    default: []
-  },
-  marks: {
-    type: [marksSchema],
-    default: []
-  }
+  
 }, {
   timestamps: true
 });
 
-module.exports = mongoose.model('Student', studentSchema);
+module.exports = mongoose.model('Volunteer', volunteerSchema);
