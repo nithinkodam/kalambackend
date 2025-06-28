@@ -24,7 +24,7 @@ const tutorSchema = new Schema({
     required: true
   },
   class:{
-    type: String,
+    type: [String],
     required:true
   },
   qualification:{
@@ -34,13 +34,10 @@ const tutorSchema = new Schema({
   address: {
     type: String,
     required: true
-  },
-  class: {
-    type: String,
-    required: true
   }
 }, {
   timestamps: true
 });
 
-module.exports = mongoose.model('Student', studentSchema);
+module.exports = mongoose.model('Tutor', tutorSchema);
+

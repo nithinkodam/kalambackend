@@ -96,7 +96,63 @@ router.post('/login', async (req, res) => {
 
 
 router.post('/poststudent', async(req,res)=>{
+
+})
+
+
+router.get('/class/:classid', async (req, res) => {
+  const classId = req.params.classid;
+
+  try {
+    const students = await Student.find({ class: classId }).select('name');
+
+    if (!students.length) {
+      return res.status(404).json({ message: 'No students found for this class' });
+    }
+
+    const studentNames = students.map(student => student.name);
+    return res.status(200).json({ students: studentNames });
+  } catch (err) {
+    console.error('Error fetching students:', err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+//add marks to a subject
+router.post('/addmarks', async (req, res) => {
+  const { assess_name, st_name, marks } = req.body;
+
+  try {
+    // Find student by name
+    const student = await Student.findOne({ name: st_name });
+
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+
+    // Add new marks entry
+    student.marks.push({
+      assessment: assess_name,
+      marks: Number(marks),
+      date: new Date() // Automatically handled by schema but you can explicitly set it
+    });
+
+    await student.save();
+
+    return res.status(200).json({ message: 'Marks added successfully', student });
+  } catch (err) {
+    console.error('Error adding marks:', err);
+    return res.status(500).json({ message: 'Server error while adding marks' });
+  }
+});
+
+
+router.get('/:tutorname/students', async(req,res)=>{
     
 })
+
+
+
 
 module.exports = router
